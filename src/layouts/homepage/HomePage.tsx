@@ -7,7 +7,7 @@ function HomePage() {
     <div>
       <Banner />
       <Carousel />
-      <List/>
+      <List />
     </div>
   );
 }

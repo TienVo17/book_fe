@@ -5,11 +5,13 @@ import Navbar from "./layouts/header-footer/Navbar";
 import Footer from "./layouts/header-footer/Footer";
 import Banner from "./layouts/homepage/HomePage";
 import HomePage from "./layouts/homepage/HomePage";
+import { getAllBook } from "./api/SachApi";
 function App() {
+  getAllBook().then().catch();
   return (
     <div>
       <Navbar />
-      <HomePage/>
+      <HomePage />
       <Footer />
     </div>
   );

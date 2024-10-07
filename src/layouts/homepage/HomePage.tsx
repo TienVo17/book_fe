@@ -1,13 +1,13 @@
 import React from "react";
 import Banner from "./components/Banner";
 import Carousel from "./components/Carousel";
-import List from "../products/List";
+import DanhSachSanPham from "../products/DanhSachSanPham";
 function HomePage() {
   return (
     <div>
       <Banner />
       <Carousel />
-      <List />
+      <DanhSachSanPham />
     </div>
   );
 }

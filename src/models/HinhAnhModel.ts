@@ -1,4 +1,4 @@
-class HinhAnh {
+class HinhAnhModel {
   maHinhAnh: number;
   tenHinhAnh: string;
   icon: boolean;
@@ -19,4 +19,4 @@ class HinhAnh {
   }
 }
 
-export default HinhAnh;
+export default HinhAnhModel;

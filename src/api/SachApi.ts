@@ -1,22 +1,12 @@
 import React from "react";
 import SachModel from "../models/SachModel";
+import { my_request } from "./Request";
 
-async function request(duongDan: string) {
-  // Truy vấn tới đường dẫn
-  const response = await fetch(duongDan);
-  // Nếu bị trả về lỗi
-  if (!response.ok) {
-    throw new Error(`Không thể truy cập ${duongDan}`);
-  }
-  // Nếu tra về OK
-  return response.json();
-}
-export async function getAllBook(): Promise<SachModel[]> {
+async function laySach(duongDan: string): Promise<SachModel[]> {
   const ketQua: SachModel[] = [];
-  // Xác định endpoint
-  const duongDan: string = "http://localhost:8080/sach";
+
   //Gọi phương thức request
-  const response = await request(duongDan);
+  const response = await my_request(duongDan);
 
   // Lấy ra json sách
   const responseData = response._embedded.saches;
@@ -32,7 +22,16 @@ export async function getAllBook(): Promise<SachModel[]> {
       trungBinhXepHang: responseData[key].trungBinhXepHang,
     });
   }
-
-  console.log(response);
   return ketQua;
+}
+export async function getAllBook(): Promise<SachModel[]> {
+  // Xác định endpoint
+  const duongDan: string = "http://localhost:8080/sach?sort=maSach,desc";
+  return laySach(duongDan);
+}
+export async function get3NewBook(): Promise<SachModel[]> {
+  // Xác định endpoint
+  const duongDan: string =
+    "http://localhost:8080/sach?sort=maSach,desc&page=0&size=3";
+  return laySach(duongDan);
 }

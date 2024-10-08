@@ -2,7 +2,11 @@ import React from "react";
 
 function Carousel() {
   return (
-    <div id="carouselExampleIndicators" className="carousel slide">
+    <div
+      id="carouselExampleIndicators"
+      className="carousel slide"
+      data-bs-ride="carousel"
+    >
       <div className="carousel-indicators">
         <button
           type="button"
@@ -28,40 +32,40 @@ function Carousel() {
       <div className="carousel-inner">
         <div className="carousel-item active">
           <img
-            src={'/image/books/banner4.jpg'}
-            className="d-block w-100"
-            alt="..."
+            src={"/image/books/banner2.jpg"}
+            className="d-block"
+            alt="Wild Landscape"
             style={{
-              objectFit: "contain",
-              width: "100%",
-              height: "auto",
-              maxHeight: "500px",
+              width: "800px", // Chiều rộng cố định 800px
+              height: "auto", // Đảm bảo tỷ lệ không bị biến dạng
+              margin: "0 auto", // Căn giữa hình ảnh
+              display: "block", // Đảm bảo margin hoạt động
             }}
           />
         </div>
         <div className="carousel-item">
           <img
-            src={'/image/books/banner3.jpg'}
-            className="d-block w-100"
-            alt="..."
+            src={"/image/books/banner4.jpg"}
+            className="d-block"
+            alt="Camera"
             style={{
-              objectFit: "contain",
-              width: "100%",
-              height: "auto",
-              maxHeight: "500px",
+              width: "800px", // Chiều rộng cố định 800px
+              height: "auto", // Đảm bảo tỷ lệ không bị biến dạng
+              margin: "0 auto", // Căn giữa hình ảnh
+              display: "block", // Đảm bảo margin hoạt động
             }}
           />
         </div>
         <div className="carousel-item">
           <img
-            src={'/image/books/banner2.jpg'}
-            className="d-block w-100"
-            alt="..."
+            src={"/image/books/banner3.jpg"}
+            className="d-block"
+            alt="Exotic Fruits"
             style={{
-              objectFit: "contain",
-              width: "100%",
-              height: "auto",
-              maxHeight: "500px",
+              width: "800px", // Chiều rộng cố định 800px
+              height: "auto", // Đảm bảo tỷ lệ không bị biến dạng
+              margin: "0 auto", // Căn giữa hình ảnh
+              display: "block", // Đảm bảo margin hoạt động
             }}
           />
         </div>
@@ -72,7 +76,7 @@ function Carousel() {
         data-bs-target="#carouselExampleIndicators"
         data-bs-slide="prev"
       >
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span className="carousel-control-prev-icon" aria-hidden="true" style={{ filter: "invert(1)" }}></span>
         <span className="visually-hidden">Previous</span>
       </button>
       <button
@@ -81,7 +85,7 @@ function Carousel() {
         data-bs-target="#carouselExampleIndicators"
         data-bs-slide="next"
       >
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        <span className="carousel-control-next-icon" aria-hidden="true" style={{ filter: "invert(1)" }}></span>
         <span className="visually-hidden">Next</span>
       </button>
     </div>

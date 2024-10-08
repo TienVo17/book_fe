@@ -1,8 +1,12 @@
 import React from "react";
 import SachModel from "../models/SachModel";
 import { my_request } from "./Request";
-
-async function laySach(duongDan: string): Promise<SachModel[]> {
+interface KetQuaInterface {
+  ketQua: SachModel[];
+  tongSoTrang: number;
+  tongSoSach: number;
+}
+async function laySach(duongDan: string): Promise<KetQuaInterface> {
   const ketQua: SachModel[] = [];
 
   //Gọi phương thức request
@@ -10,6 +14,11 @@ async function laySach(duongDan: string): Promise<SachModel[]> {
 
   // Lấy ra json sách
   const responseData = response._embedded.saches;
+
+  // Lấy thông tin trang
+  const tongSoTrang: number = response.page.totalPages;
+  const tongSoSach: number = response.page.totalElements;
+
   for (const key in responseData) {
     ketQua.push({
       maSach: responseData[key].maSach,
@@ -22,14 +31,14 @@ async function laySach(duongDan: string): Promise<SachModel[]> {
       trungBinhXepHang: responseData[key].trungBinhXepHang,
     });
   }
-  return ketQua;
+  return { ketQua: ketQua, tongSoSach: tongSoSach, tongSoTrang: tongSoTrang };
 }
-export async function getAllBook(): Promise<SachModel[]> {
+export async function getAllBook(trangHienTai: number): Promise<KetQuaInterface> {
   // Xác định endpoint
-  const duongDan: string = "http://localhost:8080/sach?sort=maSach,desc";
+  const duongDan: string = `http://localhost:8080/sach?sort=maSach,desc&size=8&page=${trangHienTai}`;
   return laySach(duongDan);
 }
-export async function get3NewBook(): Promise<SachModel[]> {
+export async function get3NewBook(): Promise<KetQuaInterface> {
   // Xác định endpoint
   const duongDan: string =
     "http://localhost:8080/sach?sort=maSach,desc&page=0&size=3";

@@ -45,21 +45,23 @@ const SachProps: React.FC<SachPropsInterface> = (props) => {
   return (
     <div className="col-md-3 mt-2">
       <div className="card">
-          <img
-            src={duLieuAnh}
-            className="card-img-top"
-            alt={props.sach.tenSach}
-            style={{ height: "300px" }}
-          />
+        <img
+          src={duLieuAnh}
+          className="card-img-top"
+          alt={props.sach.tenSach}
+          style={{ height: "300px" }}
+        />
         <div className="card-body">
           <h5 className="card-title">{props.sach.tenSach}</h5>
           <p className="card-text">{props.sach.moTa}</p>
           <div className="price">
-            <span className="original-price">
-              <del>{props.sach.giaNiemYet}</del>
+          <span className="original-price " style={{ paddingRight: "10px" }}>
+              <del>{props.sach.giaNiemYet} VNĐ</del>
+              
             </span>
+            <br/>
             <span className="discounted-price">
-              <strong>{props.sach.giaBan}</strong>
+              <strong>{props.sach.giaBan}</strong> <strong>VNĐ</strong>
             </span>
           </div>
           <div className="row mt-2" role="group">

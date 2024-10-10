@@ -4,8 +4,12 @@ import SachModel from "../../models/SachModel";
 import SachProps from "./components/SachProps";
 import { PhanTrang } from "../utils/PhanTrang";
 import { getAllBook } from "../../api/SachApi";
+import { findByBook } from "../../api/SachApi";
+interface DanhSachSanPhamProps {
+  tuKhoaTimKiem: string;
+}
 
-const DanhSachSanPham: React.FC = () => {
+function DanhSachSanPham({ tuKhoaTimKiem }: DanhSachSanPhamProps) {
   const [danhsachQuyenSach, setDanhSachQuyenSach] = useState<SachModel[]>([]);
   const [dangTaiDuLieu, setDangTaiDuLieu] = useState<boolean>(true);
   const [baoLoi, setBaoLoi] = useState(null);
@@ -15,17 +19,29 @@ const DanhSachSanPham: React.FC = () => {
 
   useEffect(
     () => {
-      getAllBook(trangHienTai - 1)
-        .then((kq) => {
-          setDanhSachQuyenSach(kq.ketQua);
-          setTongSoTrang(kq.tongSoTrang);
-          setDangTaiDuLieu(false);
-        })
-        .catch((error) => {
-          setBaoLoi(error.message);
-        });
+      if (tuKhoaTimKiem === "") {
+        getAllBook(trangHienTai - 1)
+          .then((kq) => {
+            setDanhSachQuyenSach(kq.ketQua);
+            setTongSoTrang(kq.tongSoTrang);
+            setDangTaiDuLieu(false);
+          })
+          .catch((error) => {
+            setBaoLoi(error.message);
+          });
+      } else {
+        findByBook(tuKhoaTimKiem)
+          .then((kq) => {
+            setDanhSachQuyenSach(kq.ketQua);
+            setTongSoTrang(kq.tongSoTrang);
+            setDangTaiDuLieu(false);
+          })
+          .catch((error) => {
+            setBaoLoi(error.message);
+          });
+      }
     },
-    [trangHienTai] // Chỉ gọi 1 lần
+    [trangHienTai, tuKhoaTimKiem] // Chỉ gọi 1 lần
   );
   const phanTrang = (trang: number) => setTrangHienTai(trang);
   if (dangTaiDuLieu) {
@@ -42,6 +58,17 @@ const DanhSachSanPham: React.FC = () => {
       </div>
     );
   }
+
+  if (danhsachQuyenSach.length === 0) {
+    return (
+      <div className="container">
+         <div className="d-flex align-items-center justify-content-center">
+          <h1>Hiện tại không có sách theo yêu cầu!</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="row mt-4 mb-4">
@@ -56,5 +83,5 @@ const DanhSachSanPham: React.FC = () => {
       />
     </div>
   );
-};
+}
 export default DanhSachSanPham;

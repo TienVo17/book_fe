@@ -33,7 +33,9 @@ async function laySach(duongDan: string): Promise<KetQuaInterface> {
   }
   return { ketQua: ketQua, tongSoSach: tongSoSach, tongSoTrang: tongSoTrang };
 }
-export async function getAllBook(trangHienTai: number): Promise<KetQuaInterface> {
+export async function getAllBook(
+  trangHienTai: number
+): Promise<KetQuaInterface> {
   // Xác định endpoint
   const duongDan: string = `http://localhost:8080/sach?sort=maSach,desc&size=8&page=${trangHienTai}`;
   return laySach(duongDan);
@@ -42,5 +44,13 @@ export async function get3NewBook(): Promise<KetQuaInterface> {
   // Xác định endpoint
   const duongDan: string =
     "http://localhost:8080/sach?sort=maSach,desc&page=0&size=3";
+  return laySach(duongDan);
+}
+
+export async function findByBook(tuKhoaTimKiem: string): Promise<KetQuaInterface> {
+  let duongDan: string = `http://localhost:8080/sach?sort=maSach,desc&size=8&page=0`;
+  if(tuKhoaTimKiem !== ''){
+    duongDan = `http://localhost:8080/sach/search/findByTenSachContaining?sort=maSach,desc&size=8&page=0&tenSach=${tuKhoaTimKiem}`
+  }
   return laySach(duongDan);
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
 interface NavbarProps {
   tuKhoaTimKiem: string;
@@ -6,6 +6,12 @@ interface NavbarProps {
 }
 
 function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
+  const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTuKhoaTimKiem(e.target.value);
+  };
+  const handleSearch = () => {
+    setTuKhoaTimKiem(tuKhoaTimKiem);
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -104,9 +110,16 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
             type="search"
             placeholder="Tìm kiếm"
             aria-label="Search"
+            onChange={onSearchInputChange}
+            value={tuKhoaTimKiem}
           />
-          <button className="btn btn-outline-success" type="submit">
-            Search
+          <button
+            className="btn btn-outline-success"
+            type="button"
+            onClick={handleSearch}
+            value={tuKhoaTimKiem}
+          >
+            Tìm Kiếm
           </button>
         </div>
 

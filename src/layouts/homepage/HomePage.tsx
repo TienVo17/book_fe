@@ -2,12 +2,17 @@ import React from "react";
 import Banner from "./components/Banner";
 import Carousel from "./components/Carousel";
 import DanhSachSanPham from "../products/DanhSachSanPham";
-function HomePage() {
+
+interface HomePageProps {
+  tuKhoaTimKiem: string;
+}
+
+function HomePage({ tuKhoaTimKiem }: HomePageProps) {
   return (
     <div>
       <Banner />
       <Carousel />
-      <DanhSachSanPham />
+      <DanhSachSanPham tuKhoaTimKiem={tuKhoaTimKiem} />
     </div>
   );
 }

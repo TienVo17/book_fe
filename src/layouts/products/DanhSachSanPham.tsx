@@ -7,9 +7,10 @@ import { getAllBook } from "../../api/SachApi";
 import { findByBook } from "../../api/SachApi";
 interface DanhSachSanPhamProps {
   tuKhoaTimKiem: string;
+  maTheLoai: number;
 }
 
-function DanhSachSanPham({ tuKhoaTimKiem }: DanhSachSanPhamProps) {
+function DanhSachSanPham({ tuKhoaTimKiem, maTheLoai }: DanhSachSanPhamProps) {
   const [danhsachQuyenSach, setDanhSachQuyenSach] = useState<SachModel[]>([]);
   const [dangTaiDuLieu, setDangTaiDuLieu] = useState<boolean>(true);
   const [baoLoi, setBaoLoi] = useState(null);
@@ -19,7 +20,7 @@ function DanhSachSanPham({ tuKhoaTimKiem }: DanhSachSanPhamProps) {
 
   useEffect(
     () => {
-      if (tuKhoaTimKiem === "") {
+      if (tuKhoaTimKiem === "" && maTheLoai==0) {
         getAllBook(trangHienTai - 1)
           .then((kq) => {
             setDanhSachQuyenSach(kq.ketQua);
@@ -30,7 +31,7 @@ function DanhSachSanPham({ tuKhoaTimKiem }: DanhSachSanPhamProps) {
             setBaoLoi(error.message);
           });
       } else {
-        findByBook(tuKhoaTimKiem)
+        findByBook(tuKhoaTimKiem,maTheLoai)
           .then((kq) => {
             setDanhSachQuyenSach(kq.ketQua);
             setTongSoTrang(kq.tongSoTrang);
@@ -41,7 +42,7 @@ function DanhSachSanPham({ tuKhoaTimKiem }: DanhSachSanPhamProps) {
           });
       }
     },
-    [trangHienTai, tuKhoaTimKiem] // Chỉ gọi 1 lần
+    [trangHienTai, tuKhoaTimKiem,maTheLoai] // Chỉ gọi 1 lần
   );
   const phanTrang = (trang: number) => setTrangHienTai(trang);
   if (dangTaiDuLieu) {

@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 
 interface NavbarProps {
   tuKhoaTimKiem: string;
@@ -6,11 +6,13 @@ interface NavbarProps {
 }
 
 function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
+  const [tuKhoaTamThoi, setTuKhoaTamThoi] = useState("");
+
   const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTuKhoaTimKiem(e.target.value);
+    setTuKhoaTamThoi(e.target.value);
   };
   const handleSearch = () => {
-    setTuKhoaTimKiem(tuKhoaTimKiem);
+    setTuKhoaTimKiem(tuKhoaTamThoi);
   };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -50,17 +52,17 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown1">
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/1">
                     Thể loại 1
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/2">
                     Thể loại 2
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/3">
                     Thể loại 3
                   </a>
                 </li>
@@ -111,13 +113,12 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
             placeholder="Tìm kiếm"
             aria-label="Search"
             onChange={onSearchInputChange}
-            value={tuKhoaTimKiem}
+            value={tuKhoaTamThoi}
           />
           <button
             className="btn btn-outline-success"
             type="button"
             onClick={handleSearch}
-            value={tuKhoaTimKiem}
           >
             Tìm Kiếm
           </button>

@@ -1,9 +1,9 @@
 class HinhAnhModel {
   maHinhAnh: number;
-  tenHinhAnh: string;
-  icon: boolean;
-  urlHinh: string;
-  dataImage: string;
+  tenHinhAnh?: string;
+  icon?: boolean;
+  urlHinh?: string;
+  dataImage?: string;
   constructor(
     maHinhAnh: number,
     tenHinhAnh: string,

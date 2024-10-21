@@ -4,7 +4,7 @@ class SachModel {
     giaBan?: number;
     giaNiemYet?: number;
     moTa?: string;
-    soLuong?: string;
+    soLuong?: number;
     tenTacGia?: string;
     trungBinhXepHang?: number;
 
@@ -14,7 +14,7 @@ class SachModel {
     giaBan?: number,
     giaNiemYet?: number,
     moTa?: string,
-    soLuong?: string,
+    soLuong?: number,
     tenTacGia?: string,
     trungBinhXepHang?: number,
   ){

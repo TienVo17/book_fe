@@ -1,29 +1,68 @@
 import React, { useEffect, useState } from "react";
 import HinhAnhModel from "../../../models/HinhAnhModel";
-import { getAllImageOfOneBook } from "../../../api/HinhAnhApi";
+import { getAllReviewOfOneBook } from "../../../api/DanhGiaAPI";
+import DanhGiaModel from "../../../models/DanhGiaModel";
 
 interface DanhGiaSanPham {
   maSach: number;
 }
+export const renderStars = (rating: number) => {
+  const fullStars = Math.floor(rating);
+  const halfStar = rating - fullStars >= 0.5;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+  return (
+    <>
+      {Array(fullStars)
+        .fill(0)
+        .map((_, index) => (
+          <i
+            className="fas fa-star"
+            key={`full-${index}`}
+            style={{ color: "gold" }}
+          ></i>
+        ))}
+      {halfStar && (
+        <i className="fas fa-star-half-alt" style={{ color: "gold" }}></i>
+      )}
+      {Array(emptyStars)
+        .fill(0)
+        .map((_, index) => (
+          <i
+            className="far fa-star"
+            key={`empty-${index}`}
+            style={{ color: "gold" }}
+          ></i>
+        ))}
+    </>
+  );
+};
 
 const DanhGiaSanPham: React.FC<DanhGiaSanPham> = (props) => {
   const maSach: number = props.maSach;
 
-  const [danhSachDanhGia, setdanhSachDanhGia] = useState<HinhAnhModel[]>([]);
+  const [danhSachDanhGia, setdanhSachDanhGia] = useState<DanhGiaModel[]>([]);
   const [dangTaiDuLieu, setDangTaiDuLieu] = useState(true);
   const [baoLoi, setBaoLoi] = useState(null);
 
-  useEffect(() => {
-    getAllImageOfOneBook(maSach)
-      .then((danhSach) => {
-        setdanhSachDanhGia(danhSach);
-        setDangTaiDuLieu(false);
-      })
-      .catch((error) => {
-        setDangTaiDuLieu(false);
-        setBaoLoi(error.message);
-      });
-  }, [maSach]);
+  useEffect(
+    () => {
+      getAllReviewOfOneBook(maSach)
+        .then((danhSachDanhGia) => {
+          setdanhSachDanhGia(danhSachDanhGia);
+          setDangTaiDuLieu(false);
+        })
+        .catch((error) => {
+          setDangTaiDuLieu(false);
+          setBaoLoi(error.message);
+        });
+    },
+    [] // Chi goi mot lan
+  );
+
+  console.log(danhSachDanhGia.length);
+
+  // console.log(danhSachDanhGia.length);
 
   if (dangTaiDuLieu) {
     return (
@@ -42,37 +81,19 @@ const DanhGiaSanPham: React.FC<DanhGiaSanPham> = (props) => {
   }
 
   return (
-    <div className="row">
-      <div>
-        {hinhAnhDangChon && (
-          <img
-            src={hinhAnhDangChon.dataImage}
-            style={{ width: "100%", maxHeight: "500px", objectFit: "cover" }}
-            alt="Main"
-          />
-        )}
-      </div>
-      <div className="row mt-2">
-        {danhSachDanhGia.map((hinhAnh, index) => (
-          <div className="col-3" key={index}>
-            <img
-              onClick={() => chonAnh(hinhAnh)}
-              src={hinhAnh.dataImage}
-              alt={`Thumbnail ${index}`}
-              style={{
-                width: "80px", // Set thumbnail width
-                height: "80px", // Set thumbnail height
-                objectFit: "cover", // Prevent stretching and keep aspect ratio
-                cursor: "pointer",
-                border: hinhAnhDangChon === hinhAnh ? "2px solid #007bff" : "none",
-                borderRadius: "4px"
-              }}
-            />
+    <div className="container mt-2 mb-2 text-center">
+      <h4>Đánh giá sản phẩm: </h4>
+      {danhSachDanhGia.map((danhGia, index) => (
+        <div className="row">
+          <div className="col-4  text-end">
+            <p>{renderStars(danhGia.diemXepHang ?? 0)}</p>
           </div>
-        ))}
-      </div>
+          <div className="col-8 text-start">
+            <p>{danhGia.nhanXet}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
-
 export default DanhGiaSanPham;

@@ -16,8 +16,8 @@ async function getAllImageOfBook(duongDan: string): Promise<HinhAnhModel[]> {
       maHinhAnh: responseData[key].maHinhAnh,
       tenHinhAnh: responseData[key].tenHinhAnh,
       icon: responseData[key].laIcon,
-      urlHinh: responseData[key].duongDan,
-      dataImage: responseData[key].duLieuAnh,
+      urlHinh: responseData[key].urlHinh,
+      dataImage: responseData[key].dataImage,
     });
   }
 
@@ -28,7 +28,7 @@ export async function getAllImageOfOneBook(
   maSach: number
 ): Promise<HinhAnhModel[]> {
   // Xác định endpoint
-  const duongDan: string = `http://localhost:8080/sach/${maSach}/danhSachHinhAnh`;
+  const duongDan: string = `http://localhost:8080/sach/${maSach}/listHinhAnh`;
 
   return getAllImageOfBook(duongDan);  // Call the correct function with the string
 }
@@ -37,7 +37,7 @@ export async function getOneImageOfOneBook(
   maSach: number
 ): Promise<HinhAnhModel[]> {
   // Xác định endpoint
-  const duongDan: string = `http://localhost:8080/sach/${maSach}/danhSachHinhAnh?sort=maHinhAnh,asc&page=0&size=1`;
+  const duongDan: string = `http://localhost:8080/sach/${maSach}/listHinhAnh?sort=maHinhAnh,asc&page=0&size=1`;
 
   return getAllImageOfBook(duongDan);  // Call the correct function with the string
 }

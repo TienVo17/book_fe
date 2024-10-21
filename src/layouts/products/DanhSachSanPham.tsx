@@ -20,7 +20,7 @@ function DanhSachSanPham({ tuKhoaTimKiem, maTheLoai }: DanhSachSanPhamProps) {
 
   useEffect(
     () => {
-      if (tuKhoaTimKiem === "" && maTheLoai==0) {
+      if (tuKhoaTimKiem === "" && maTheLoai == 0) {
         getAllBook(trangHienTai - 1)
           .then((kq) => {
             setDanhSachQuyenSach(kq.ketQua);
@@ -31,7 +31,7 @@ function DanhSachSanPham({ tuKhoaTimKiem, maTheLoai }: DanhSachSanPhamProps) {
             setBaoLoi(error.message);
           });
       } else {
-        findByBook(tuKhoaTimKiem,maTheLoai)
+        findByBook(tuKhoaTimKiem, maTheLoai)
           .then((kq) => {
             setDanhSachQuyenSach(kq.ketQua);
             setTongSoTrang(kq.tongSoTrang);
@@ -42,7 +42,7 @@ function DanhSachSanPham({ tuKhoaTimKiem, maTheLoai }: DanhSachSanPhamProps) {
           });
       }
     },
-    [trangHienTai, tuKhoaTimKiem,maTheLoai] // Chỉ gọi 1 lần
+    [trangHienTai, tuKhoaTimKiem, maTheLoai] // Chỉ gọi 1 lần
   );
   const phanTrang = (trang: number) => setTrangHienTai(trang);
   if (dangTaiDuLieu) {
@@ -63,7 +63,7 @@ function DanhSachSanPham({ tuKhoaTimKiem, maTheLoai }: DanhSachSanPhamProps) {
   if (danhsachQuyenSach.length === 0) {
     return (
       <div className="container">
-         <div className="d-flex align-items-center justify-content-center">
+        <div className="d-flex align-items-center justify-content-center">
           <h1>Hiện tại không có sách theo yêu cầu!</h1>
         </div>
       </div>

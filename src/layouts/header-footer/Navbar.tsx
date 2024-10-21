@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
+import { Search } from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
 
 interface NavbarProps {
@@ -121,7 +122,7 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
             type="button"
             onClick={handleSearch}
           >
-            Tìm Kiếm
+           <Search/>
           </button>
         </div>
 

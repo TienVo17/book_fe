@@ -3,38 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import SachModel from "../../models/SachModel";
 import { getBookById } from "../../api/SachApi";
 import HinhAnhSanPham from "./components/HinhAnhSanPham";
-
-const renderStars = (rating: number) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating - fullStars >= 0.5;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-  return (
-    <>
-      {Array(fullStars)
-        .fill(0)
-        .map((_, index) => (
-          <i
-            className="fas fa-star"
-            key={`full-${index}`}
-            style={{ color: "gold" }}
-          ></i>
-        ))}
-      {halfStar && (
-        <i className="fas fa-star-half-alt" style={{ color: "gold" }}></i>
-      )}
-      {Array(emptyStars)
-        .fill(0)
-        .map((_, index) => (
-          <i
-            className="far fa-star"
-            key={`empty-${index}`}
-            style={{ color: "gold" }}
-          ></i>
-        ))}
-    </>
-  );
-};
+import DanhSachSanPham from "./DanhSachSanPham";
+import DanhGiaSanPham, { renderStars } from "./components/DanhGiaSanPham";
+import dinhDangSo from "../utils/DinhDangSo";
 
 const ChiTietSanPham: React.FC = () => {
   const { maSach } = useParams();
@@ -45,12 +16,35 @@ const ChiTietSanPham: React.FC = () => {
     if (Number.isNaN(maSachNumber)) maSachNumber = 0;
   } catch (error) {
     maSachNumber = 0;
-    console.error("Error", error);
+    console.error("Lỗi", error);
   }
 
   const [sach, setSach] = useState<SachModel | null>(null);
   const [dangTaiDuLieu, setDangTaiDuLieu] = useState(true);
-  const [baoLoi, setBaoLoi] = useState(null);
+  const [baoLoi, setBaoLoi] = useState<string | null>(null);
+  const [soLuong, setSoLuong] = useState(1);
+
+  const tangSoLuong = () => {
+    const soLuongTonKho = sach && sach.soLuong ? sach.soLuong : 0;
+    if (soLuong < soLuongTonKho) {
+      setSoLuong(soLuong + 1);
+    }
+  };
+
+  const giamSoLuong = () => {
+    if (soLuong > 1) {
+      setSoLuong(soLuong - 1);
+    }
+  };
+  const handleSoLuongChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const soLuongMoi = parseInt(event.target.value);
+    const soLuongTonKho = sach && sach.soLuong ? sach.soLuong : 0;
+    if (!isNaN(soLuongMoi) && soLuongMoi >= 1 && soLuongMoi <= soLuongTonKho) {
+      setSoLuong(soLuongMoi);
+    }
+  };
+  const handleMuaNgay = () => {};
+  const handleThemVaoGioHang = () => {};
 
   useEffect(() => {
     getBookById(maSachNumber)
@@ -99,14 +93,70 @@ const ChiTietSanPham: React.FC = () => {
             <div className="col-8">
               <h1>{sach.tenSach}</h1>
               <h4>{renderStars(sach.trungBinhXepHang ?? 0)}</h4>
-              <h4>{sach.giaBan}</h4>
+              <h4>{dinhDangSo(sach.giaBan)} đ</h4>
               <hr />
-              <div dangerouslySetInnerHTML={{ __html: sach.moTa + "" }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: sach.moTa || "Mô tả không có sẵn",
+                }}
+              />
               <hr />
             </div>
-            <div className="col-4"></div>
+            <div className="col-4">
+              <div>
+                <div className="mb-2">Số lượng</div>
+                <div className="d-flex align-items-center">
+                  <button
+                    className="btn btn-outline-secondary me-2"
+                    onClick={giamSoLuong}
+                  >
+                    -
+                  </button>
+                  <input
+                    className="form-control text-center"
+                    type="number"
+                    value={soLuong}
+                    min={1}
+                    onChange={handleSoLuongChange}
+                  />
+                  <button
+                    className="btn btn-outline-secondary ms-2"
+                    onClick={tangSoLuong}
+                  >
+                    +
+                  </button>
+                </div>
+
+                {sach.giaBan && (
+                  <div className="mt text-center">
+                    Số tiền tạm tính
+                    <br />
+                    <h4>{dinhDangSo(soLuong * sach.giaBan)} đ</h4>
+                  </div>
+                )}
+                <div className="d-grid gap-2">
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-3"
+                    onClick={handleMuaNgay}
+                  >
+                    Mua ngay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary mt-2"
+                    onClick={handleThemVaoGioHang}
+                  >
+                    Thêm vào giỏ hàng
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+      <div className="row mt-4 mb-4">
+        <DanhGiaSanPham maSach={maSachNumber} />
       </div>
     </div>
   );

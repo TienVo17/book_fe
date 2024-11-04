@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from 'react-router-dom';
 function DangKyNguoiDung() {
   const [tenDangNhap, setTenDangNhap] = useState("");
   const [email, setEmail] = useState("");
@@ -53,8 +54,7 @@ function DangKyNguoiDung() {
             soDienThoai: soDienThoai,
             gioiTinh: gioiTinh,
             daKichHoat: 0,
-            maKichHoat: ""
-
+            maKichHoat: "",
           }),
         });
 
@@ -170,120 +170,194 @@ function DangKyNguoiDung() {
   };
 
   return (
-    <div className="container">
-      <h1 className="mt-5 text-center">Đăng ký</h1>
-      <div className="mb-3 col-md-6 col-12 mx-auto">
-        <form onSubmit={handleSubmit} className="form">
-          <div className="mb-3">
-            <label htmlFor="tenDangNhap" className="form-label">
-              Tên đăng nhập
-            </label>
-            <input
-              type="text"
-              id="tenDangNhap"
-              className="form-control"
-              value={tenDangNhap}
-              onChange={handleTenDangNhapChange}
-            />
-            <div style={{ color: "red" }}>{errorTenDangNhap}</div>
+    <div className="container-fluid vh-100 overflow-hidden">
+      <div className="row justify-content-center align-items-center h-100">
+        <div className="col-md-6 col-lg-5">
+          <div className="card shadow-lg">
+            <div className="card-body p-5">
+              <div className="text-center mb-4">
+                <i className="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                <h3 className="font-weight-bold">Đăng ký tài khoản</h3>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="tenDangNhap" className="form-label">
+                    Tên đăng nhập
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fas fa-user"></i>
+                    </span>
+                    <input
+                      type="text"
+                      id="tenDangNhap"
+                      className="form-control"
+                      value={tenDangNhap}
+                      onChange={handleTenDangNhapChange}
+                      placeholder="Nhập tên đăng nhập"
+                    />
+                  </div>
+                  {errorTenDangNhap && (
+                    <small className="text-danger">{errorTenDangNhap}</small>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fas fa-envelope"></i>
+                    </span>
+                    <input
+                      type="email"
+                      id="email"
+                      className="form-control"
+                      value={email}
+                      onChange={handleEmailChange}
+                      placeholder="Nhập email"
+                    />
+                  </div>
+                  {errorEmail && (
+                    <small className="text-danger">{errorEmail}</small>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="matKhau" className="form-label">
+                    Mật khẩu
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fas fa-lock"></i>
+                    </span>
+                    <input
+                      type="password"
+                      id="matKhau"
+                      className="form-control"
+                      value={matKhau}
+                      onChange={handleMatKhauChange}
+                      placeholder="Nhập mật khẩu"
+                    />
+                  </div>
+                  {errorMatKhau && (
+                    <small className="text-danger">{errorMatKhau}</small>
+                  )}
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="matKhauLapLai" className="form-label">
+                    Xác nhận mật khẩu
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fas fa-lock"></i>
+                    </span>
+                    <input
+                      type="password"
+                      id="matKhauLapLai"
+                      className="form-control"
+                      value={matKhauLapLai}
+                      onChange={handleMatKhauLapLaiChange}
+                      placeholder="Nhập lại mật khẩu"
+                    />
+                  </div>
+                  {errorMatKhauLapLai && (
+                    <small className="text-danger">{errorMatKhauLapLai}</small>
+                  )}
+                </div>
+
+                <div className="row mb-3">
+                  <div className="col-md-6">
+                    <label htmlFor="hoDem" className="form-label">
+                      Họ đệm
+                    </label>
+                    <input
+                      type="text"
+                      id="hoDem"
+                      className="form-control"
+                      value={hoDem}
+                      onChange={(e) => setHoDen(e.target.value)}
+                      placeholder="Nhập họ đệm"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor="ten" className="form-label">
+                      Tên
+                    </label>
+                    <input
+                      type="text"
+                      id="ten"
+                      className="form-control"
+                      value={ten}
+                      onChange={(e) => setTen(e.target.value)}
+                      placeholder="Nhập tên"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="soDienThoai" className="form-label">
+                    Số điện thoại
+                  </label>
+                  <div className="input-group">
+                    <span className="input-group-text">
+                      <i className="fas fa-phone"></i>
+                    </span>
+                    <input
+                      type="tel"
+                      id="soDienThoai"
+                      className="form-control"
+                      value={soDienThoai}
+                      onChange={(e) => setSoDienThoai(e.target.value)}
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <label htmlFor="gioiTinh" className="form-label">
+                    Giới tính
+                  </label>
+                  <select
+                    id="gioiTinh"
+                    className="form-select"
+                    value={gioiTinh}
+                    onChange={(e) => setGioiTinh(e.target.value)}
+                  >
+                    <option value="M">Nam</option>
+                    <option value="F">Nữ</option>
+                    <option value="O">Khác</option>
+                  </select>
+                </div>
+
+                <div className="d-grid gap-2">
+                  <button type="submit" className="btn btn-primary btn-lg">
+                    Đăng ký
+                  </button>
+                </div>
+
+                {thongBao && (
+                  <div className="alert alert-success mt-3" role="alert">
+                    <i className="fas fa-check-circle me-2"></i>
+                    {thongBao}
+                  </div>
+                )}
+
+                <div className="text-center mt-3">
+                  <p>
+                    Đã có tài khoản?{" "}
+                    <NavLink to="/dang-nhap" className="text-decoration-none">
+                      Đăng nhập ngay
+                    </NavLink>
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              type="text"
-              id="email"
-              className="form-control"
-              value={email}
-              onChange={handleEmailChange}
-            />
-            <div style={{ color: "red" }}>{errorEmail}</div>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="matKhau" className="form-label">
-              Mật Khẩu
-            </label>
-            <input
-              type="password"
-              id="matKhau"
-              className="form-control"
-              value={matKhau}
-              onChange={handleMatKhauChange}
-            />
-            <div style={{ color: "red" }}>{errorMatKhau}</div>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="matKhauLapLai" className="form-label">
-              Nhập lại mật khẩu
-            </label>
-            <input
-              type="password"
-              id="matKhauLapLai"
-              className="form-control"
-              value={matKhauLapLai}
-              onChange={handleMatKhauLapLaiChange}
-            />
-            <div style={{ color: "red" }}>{errorMatKhauLapLai}</div>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="hoDem" className="form-label">
-              Họ đệm
-            </label>
-            <input
-              type="text"
-              id="hoDem"
-              className="form-control"
-              value={hoDem}
-              onChange={(e) => setHoDen(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="ten" className="form-label">
-              Tên
-            </label>
-            <input
-              type="text"
-              id="ten"
-              className="form-control"
-              value={ten}
-              onChange={(e) => setTen(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="soDienThoai" className="form-label">
-              Số điện thoại
-            </label>
-            <input
-              type="text"
-              id="soDienThoai"
-              className="form-control"
-              value={soDienThoai}
-              onChange={(e) => setSoDienThoai(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="gioiTinh" className="form-label">
-              Giới tính
-            </label>
-            <select
-              id="gioiTinh"
-              className="form-control"
-              value={gioiTinh}
-              onChange={(e) => setGioiTinh(e.target.value)}
-            >
-              <option value="M">Nam</option>
-              <option value="F">Nữ</option>
-              <option value="O">Khác</option>
-            </select>
-          </div>
-          <div className="text-center">
-            <button type="submit" className="btn btn-primary">
-              Đăng Ký
-            </button>
-            <div style={{ color: "green" }}>{thongBao}</div>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );

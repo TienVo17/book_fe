@@ -122,7 +122,7 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
             type="button"
             onClick={handleSearch}
           >
-           <Search/>
+            <Search />
           </button>
         </div>
 
@@ -138,9 +138,9 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
         {/* Biểu tượng đăng nhập */}
         <ul className="navbar-nav me-1">
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            <NavLink className="nav-link" to="/dang-nhap">
               <i className="fas fa-user"></i>
-            </a>
+            </NavLink>
           </li>
         </ul>
       </div>

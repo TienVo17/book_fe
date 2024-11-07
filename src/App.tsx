@@ -11,46 +11,44 @@ import DangKyNguoiDung from "./layouts/user/DangKyNguoiDung";
 import KichHoatTaiKhoan from "./layouts/user/KichHoatTaiKhoan";
 import DangNhap from "./layouts/user/DangNhap";
 import Test from "./layouts/user/Test";
-import SachForm from "./layouts/admin/SachForm";
-import SachForm_Admin from "./layouts/admin/SachForm";
+import AdminLayout from "./layouts/admin/layouts/AdminLayout";
+import DanhSachSach from "./layouts/admin/components/DanhSachSach";
+
 function App() {
   const [tuKhoaTimKiem, setTuKhoaTimKiem] = useState("");
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Navbar
-          tuKhoaTimKiem={tuKhoaTimKiem}
-          setTuKhoaTimKiem={setTuKhoaTimKiem}
-        />
-        <Routes>
-          <Route
-            path="/"
-            element={<HomePage tuKhoaTimKiem={tuKhoaTimKiem} />}
-          />
-          <Route
-            path="/:maTheLoai"
-            element={<HomePage tuKhoaTimKiem={tuKhoaTimKiem} />}
-          />
-          <Route path="/about" element={<About />} />
-          <Route path="/sach/:maSach" element={<ChiTietSanPham />} />
-
-          <Route path="/dang-ky" element={<DangKyNguoiDung />} />
-          <Route
-            path="/kich-hoat/:email/:maKichHoat"
-            element={<KichHoatTaiKhoan />}
-          />
-          <Route
-            path="/dang-nhap"
-            element={<DangNhap />}
-          />
-          <Route path='/test' element={<Test />} />
-          <Route path='/admin/SachForm' element={<SachForm_Admin />} />
-        </Routes>
-        
-        <Footer />
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/quan-ly/*" element={<AdminLayout />} />
+        <Route path="/*" element={
+          <>
+            <Navbar
+              tuKhoaTimKiem={tuKhoaTimKiem}
+              setTuKhoaTimKiem={setTuKhoaTimKiem}
+            />
+            <Routes>
+              <Route path="/" element={<HomePage tuKhoaTimKiem={tuKhoaTimKiem} />} />
+              <Route
+                path="/:maTheLoai"
+                element={<HomePage tuKhoaTimKiem={tuKhoaTimKiem} />}
+              />
+              <Route path="/about" element={<About />} />
+              <Route path="/sach/:maSach" element={<ChiTietSanPham />} />
+              <Route path="/dang-ky" element={<DangKyNguoiDung />} />
+              <Route
+                path="/kich-hoat/:email/:maKichHoat"
+                element={<KichHoatTaiKhoan />}
+              />
+              <Route path="/dang-nhap" element={<DangNhap />} />
+              <Route path="/test" element={<Test />} />
+              <Route path="/quan-ly/danh-sach-sach" element={<DanhSachSach />} />
+            </Routes>
+            <Footer />
+          </>
+        } />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

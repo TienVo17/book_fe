@@ -1,5 +1,5 @@
-import React, { FormEvent, useState } from "react";
-import RequireAdmin from "./RequireAdmin";
+import React, { useState, FormEvent } from 'react';
+
 const SachForm: React.FC = () => {
   const [sach, setSach] = useState({
     maSach: 0,
@@ -44,126 +44,110 @@ const SachForm: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row min-vh-100">
-        <div className="col-md-6 col-sm-8 mx-auto my-4">
-          <div className="card p-4">
-            <h1 className="text-center mb-4">THÊM SÁCH</h1>
-            <form onSubmit={handleSubmit}>
-              <input type="hidden" id="maSach" value={sach.maSach} />
-
-              <div className="mb-3">
-                <label htmlFor="tenSach" className="form-label">
-                  Tên sách
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={sach.tenSach}
-                  onChange={(e) =>
-                    setSach({ ...sach, tenSach: e.target.value })
-                  }
-                  required
-                />
+    <div className="container-fluid px-4">
+      <h1 className="mt-4">Quản lý sách</h1>
+      <ol className="breadcrumb mb-4">
+        <li className="breadcrumb-item"><a href="/quan-ly">Dashboard</a></li>
+        <li className="breadcrumb-item active">Thêm sách mới</li>
+      </ol>
+      <div className="card mb-4">
+        <div className="card-header">
+          <i className="fas fa-book me-1"></i>
+          Thêm sách mới
+        </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="tenSach" className="form-label">Tên sách</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={sach.tenSach}
+                    onChange={(e) => setSach({ ...sach, tenSach: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="giaBan" className="form-label">Giá bán</label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    value={sach.giaBan}
+                    onChange={(e) => setSach({ ...sach, giaBan: parseFloat(e.target.value) })}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="giaNiemYet" className="form-label">Giá niêm yết</label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    value={sach.giaNiemYet}
+                    onChange={(e) => setSach({ ...sach, giaNiemYet: parseFloat(e.target.value) })}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="soLuong" className="form-label">Số lượng</label>
+                  <input
+                    className="form-control"
+                    type="number"
+                    value={sach.soLuong}
+                    onChange={(e) => setSach({ ...sach, soLuong: parseInt(e.target.value) })}
+                    required
+                  />
+                </div>
               </div>
-
-              <div className="mb-3">
-                <label htmlFor="giaBan" className="form-label">
-                  Giá bán
-                </label>
-                <input
-                  className="form-control"
-                  type="number"
-                  value={sach.giaBan}
-                  onChange={(e) =>
-                    setSach({ ...sach, giaBan: parseFloat(e.target.value) })
-                  }
-                  required
-                />
+              <div className="col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="tenTacGia" className="form-label">Tên tác giả</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={sach.tenTacGia}
+                    onChange={(e) => setSach({ ...sach, tenTacGia: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="isbn" className="form-label">ISBN</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    value={sach.isbn}
+                    onChange={(e) => setSach({ ...sach, isbn: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="moTa" className="form-label">Mô tả</label>
+                  <textarea
+                    className="form-control"
+                    rows={3}
+                    value={sach.moTa}
+                    onChange={(e) => setSach({ ...sach, moTa: e.target.value })}
+                    required
+                  />
+                </div>
               </div>
-
-              <div className="mb-3">
-                <label htmlFor="giaNiemYet" className="form-label">
-                  Giá niêm yết
-                </label>
-                <input
-                  className="form-control"
-                  type="number"
-                  value={sach.giaNiemYet}
-                  onChange={(e) =>
-                    setSach({ ...sach, giaNiemYet: parseFloat(e.target.value) })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="soLuong" className="form-label">
-                  Số lượng
-                </label>
-                <input
-                  className="form-control"
-                  type="number"
-                  value={sach.soLuong}
-                  onChange={(e) =>
-                    setSach({ ...sach, soLuong: parseInt(e.target.value) })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="tenTacGia" className="form-label">
-                  Tên tác giả
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={sach.tenTacGia}
-                  onChange={(e) =>
-                    setSach({ ...sach, tenTacGia: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="moTa" className="form-label">
-                  Mô tả
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={sach.moTa}
-                  onChange={(e) => setSach({ ...sach, moTa: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="isbn" className="form-label">
-                  ISBN
-                </label>
-                <input
-                  className="form-control"
-                  type="text"
-                  value={sach.isbn}
-                  onChange={(e) => setSach({ ...sach, isbn: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="text-center">
-                <button type="submit" className="btn btn-success">
-                  Lưu
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="text-center mt-3">
+              <button type="submit" className="btn btn-primary me-2">
+                <i className="fas fa-save me-2"></i>
+                Lưu sách
+              </button>
+              <button type="reset" className="btn btn-secondary">
+                <i className="fas fa-undo me-2"></i>
+                Làm mới
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
-const SachForm_Admin = RequireAdmin(SachForm);
-export default SachForm_Admin;
+
+export default SachForm;

@@ -9,7 +9,6 @@ interface NavbarProps {
 
 function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
   const [tuKhoaTamThoi, setTuKhoaTamThoi] = useState("");
-
   const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTuKhoaTamThoi(e.target.value);
   };
@@ -129,9 +128,11 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
         {/* Biểu tượng giỏ hàng */}
         <ul className="navbar-nav me-1">
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            <NavLink className="nav-link position-relative" to="/gio-hang">
               <i className="fas fa-shopping-cart"></i>
-            </a>
+             
+          
+            </NavLink>
           </li>
         </ul>
 

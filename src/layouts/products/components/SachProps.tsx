@@ -5,6 +5,8 @@ import { getAllImageOfOneBook } from "../../../api/HinhAnhApi";
 import { Link } from "react-router-dom";
 import { renderStars } from "./DanhGiaSanPham";
 import dinhDangSo from "../../utils/DinhDangSo";
+import { toast } from 'react-toastify';
+
 interface SachPropsInterface {
   sach: SachModel;
 }
@@ -88,7 +90,11 @@ const SachProps: React.FC<SachPropsInterface> = (props) => {
               <a href="#" className="btn btn-secondary btn-block me-2">
                 <i className="fas fa-heart"></i>
               </a>
-              <button className="btn btn-danger btn-block">
+              <button 
+                className="btn btn-danger btn-block"
+               
+                
+              >
                 <i className="fas fa-shopping-cart"></i>
               </button>
             </div>

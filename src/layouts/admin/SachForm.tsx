@@ -15,31 +15,53 @@ const SachForm: React.FC = () => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const token = localStorage.getItem("token");
+    
+    const token = localStorage.getItem("jwt");
+    console.log("Token:", token);
+
+    if (!token) {
+      alert("Bạn chưa đăng nhập!");
+      return;
+    }
+
+    console.log("Dữ liệu sách gửi đi:", sach);
+
     fetch("http://localhost:8080/sach", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
       body: JSON.stringify(sach),
-    }).then((reponse) => {
-      if (reponse.ok) {
-        alert("Đã thêm sách thành công!");
-        setSach({
-          maSach: 0,
-          tenSach: "",
-          giaBan: 0,
-          giaNiemYet: 0,
-          moTa: "",
-          soLuong: 0,
-          tenTacGia: "",
-          isbn: "",
-          trungBinhXepHang: 0,
-        });
-      } else {
-        alert("Gặp lỗi trong quá trình thêm sách!");
+    })
+    .then(async (response) => {
+      console.log("Status:", response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.log("Error response:", errorText);
+        throw new Error(errorText);
       }
+      
+      return response;
+    })
+    .then((response) => {
+      alert("Đã thêm sách thành công!");
+      setSach({
+        maSach: 0,
+        tenSach: "",
+        giaBan: 0,
+        giaNiemYet: 0,
+        moTa: "",
+        soLuong: 0,
+        tenTacGia: "",
+        isbn: "",
+        trungBinhXepHang: 0,
+      });
+    })
+    .catch((error) => {
+      console.error("Lỗi:", error);
+      alert("Gặp lỗi trong quá trình thêm sách!");
     });
   };
 

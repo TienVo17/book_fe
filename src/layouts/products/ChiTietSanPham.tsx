@@ -1,26 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SachModel from "../../models/SachModel";
 import { getBookById } from "../../api/SachApi";
 import HinhAnhSanPham from "./components/HinhAnhSanPham";
-import DanhSachSanPham from "./DanhSachSanPham";
 import DanhGiaSanPham, { renderStars } from "./components/DanhGiaSanPham";
 import dinhDangSo from "../utils/DinhDangSo";
-import { toast } from "react-toastify";
-import { themVaoGioHang } from "../../api/GioHangAPI";
-
-interface GioHangItem {
-  maGioHang: number;
-  sach: SachModel;
-  soLuong: number;
-}
-
-// Định nghĩa interface cho dữ liệu giỏ hàng
-interface GioHangData {
-    maNguoiDung: number;
-    maSach: SachModel;  // Thay đổi kiểu dữ liệu thành SachModel
-    soLuong: number;
-}
 
 const ChiTietSanPham: React.FC = () => {
   const { maSach } = useParams();
@@ -59,47 +43,20 @@ const ChiTietSanPham: React.FC = () => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const handleThemVaoGioHang = async () => {
-    try {
-        const userJSON = localStorage.getItem("user");
-        const token = localStorage.getItem("token");
-        
-        if (!userJSON || !token || !sach) {
-            navigate('/dang-nhap');
-            toast.error("Vui lòng đăng nhập để thêm vào giỏ hàng!");
-            return;
-        }
-
-        const user = JSON.parse(userJSON);
-        const gioHangData: GioHangData = {
-            maNguoiDung: user.maNguoiDung,
-            maSach: sach,  // Gửi toàn bộ object sach
-            soLuong: soLuong,
-        };
-        
-        const ketQua = await themVaoGioHang(gioHangData);
-        if (ketQua) {
-            toast.success("Thêm vào giỏ hàng thành công!");
-        }
-    } catch (error) {
-        console.error('Lỗi:', error);
-        toast.error("Có lỗi xảy ra khi thêm vào giỏ hàng!");
-    }
-  };
-
   useEffect(() => {
-    getBookById(maSachNumber)
-      .then((sach) => {
-        setSach(sach);
-        setDangTaiDuLieu(false);
-      })
-      .catch((error) => {
-        setBaoLoi(error.message);
-        setDangTaiDuLieu(false);
-      });
-  }, [maSach]);
+    const loadSanPham = async () => {
+      getBookById(maSachNumber)
+        .then((sach) => {
+          setSach(sach);
+          setDangTaiDuLieu(false);
+        })
+        .catch((error) => {
+          setBaoLoi(error.message);
+          setDangTaiDuLieu(false);
+        });
+    };
+    loadSanPham();
+  }, [maSachNumber]);
 
   if (dangTaiDuLieu) {
     return (
@@ -182,9 +139,12 @@ const ChiTietSanPham: React.FC = () => {
                     Mua ngay
                   </button>
                   <button
-                    onClick={handleThemVaoGioHang}
                     className="btn btn-primary mt-2"
+                    onClick={() => {
+                      // ... code ...
+                    }}
                   >
+                    <i className="fas fa-shopping-cart me-2"></i>
                     Thêm vào giỏ hàng
                   </button>
                 </div>

@@ -1,7 +1,9 @@
-import SachModel from "./SachModel";
-
-export default interface GioHangModel {
-   maNguoiDung: number;
-   maSach: SachModel;
-   soLuong: number;
+interface GioHangItem {
+  maSach: number;
+  tenSach: string;
+  giaBan: number;
+  soLuong: number;
+  hinhAnh?: string;
 }
+
+export default GioHangItem; 

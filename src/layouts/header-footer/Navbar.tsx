@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, useEffect } from "react";
 import { Search } from "react-bootstrap-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 interface NavbarProps {
   tuKhoaTimKiem: string;
@@ -9,6 +9,44 @@ interface NavbarProps {
 
 function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
   const [tuKhoaTamThoi, setTuKhoaTamThoi] = useState("");
+  const [soLuongGioHang, setSoLuongGioHang] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+  const [jwt, setJwt] = useState(localStorage.getItem('jwt') || '');
+  const [userInfo, setUserInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const loadSoLuongGioHang = () => {
+      const gioHang = JSON.parse(localStorage.getItem('gioHang') || '[]');
+      const tongSoLuong = gioHang.reduce((total: number, item: any) => total + item.soLuong, 0);
+      setSoLuongGioHang(tongSoLuong);
+    };
+
+    loadSoLuongGioHang();
+    
+    // Lắng nghe cả storage và cartUpdated event
+    window.addEventListener('storage', loadSoLuongGioHang);
+    window.addEventListener('cartUpdated', loadSoLuongGioHang);
+    
+    return () => {
+      window.removeEventListener('storage', loadSoLuongGioHang);
+      window.removeEventListener('cartUpdated', loadSoLuongGioHang);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (jwt) {
+      const decodedJwt = JSON.parse(atob(jwt.split('.')[1]));
+      setUserInfo(decodedJwt);
+    }
+  }, [jwt]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwt');
+    setJwt('');
+    navigate('/');
+  };
+
   const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTuKhoaTamThoi(e.target.value);
   };
@@ -130,18 +168,57 @@ function Navbar({ tuKhoaTimKiem, setTuKhoaTimKiem }: NavbarProps) {
           <li className="nav-item">
             <NavLink className="nav-link position-relative" to="/gio-hang">
               <i className="fas fa-shopping-cart"></i>
-             
-          
+              {soLuongGioHang > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {soLuongGioHang}
+                </span>
+              )}
             </NavLink>
           </li>
         </ul>
 
-        {/* Biểu tượng đăng nhập */}
+        {/* Thay thế phần biểu tượng đăng nhập cũ bằng code mới */}
         <ul className="navbar-nav me-1">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/dang-nhap">
-              <i className="fas fa-user"></i>
-            </NavLink>
+            {!jwt ? (
+              <NavLink className="nav-link" to="/dang-nhap">
+                <i className="fas fa-user"></i>
+              </NavLink>
+            ) : (
+              <div className="dropdown">
+                <button 
+                  className="btn nav-link dropdown-toggle"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  style={{ border: 'none' }}
+                >
+                  <i className="fas fa-user me-1"></i>
+                  {userInfo?.sub || 'User'}
+                </button>
+                <ul className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`}
+                  style={{ minWidth: '200px', right: 0, left: 'auto' }}
+                >
+                  <li>
+                    <NavLink to="/profile" className="dropdown-item">
+                      <i className="fas fa-user me-2"></i>Tài khoản
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/settings" className="dropdown-item">
+                      <i className="fas fa-cog me-2"></i>Cài đặt
+                    </NavLink>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <button 
+                      className="dropdown-item text-danger" 
+                      onClick={handleLogout}
+                    >
+                      <i className="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
           </li>
         </ul>
       </div>

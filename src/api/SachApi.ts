@@ -94,3 +94,91 @@ export async function getBookById(maSach: number): Promise<SachModel | null> {
     return null;
   }
 }
+
+export async function capNhatSach(sach: SachModel): Promise<boolean> {
+  const duongDan = `http://localhost:8080/sach/${sach.maSach}`;
+  const token = localStorage.getItem('jwt');
+
+  try {
+    const response = await fetch(duongDan, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(sach)
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Error:', error);
+    return false;
+  }
+}
+
+export async function xoaSach(maSach: number): Promise<boolean> {
+  const duongDan = `http://localhost:8080/sach/${maSach}`;
+  const token = localStorage.getItem('jwt');
+
+  // Kiểm tra token tồn tại
+  if (!token) {
+    console.error('Không tìm thấy token xác thực');
+    return false;
+  }
+
+  try {
+    const response = await fetch(duongDan, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'  // Thêm content-type
+      }
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Error:', error);
+    return false;
+  }
+}
+
+export async function themSach(sach: SachModel): Promise<boolean> {
+  const duongDan = `http://localhost:8080/sach`;
+  const token = localStorage.getItem('jwt');
+
+  // Thêm log để debug
+  console.log('Token:', token);
+
+  if (!token) {
+    console.error('Không tìm thấy token xác thực');
+    return false;
+  }
+
+  try {
+    // Log request details
+    console.log('Request Headers:', {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    
+    const response = await fetch(duongDan, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(sach)
+    });
+
+    // Log response để debug
+    console.log('Response status:', response.status);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log('Error response:', errorText);
+    }
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error:', error);
+    return false;
+  }
+}
+

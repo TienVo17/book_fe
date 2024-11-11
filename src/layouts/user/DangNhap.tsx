@@ -6,43 +6,41 @@ const DangNhap = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
+  const handleDangNhap = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
     const loginRequest = {
       username: username,
       password: password,
     };
 
-    fetch("http://localhost:8080/tai-khoan/dang-nhap", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginRequest),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Đăng nhập thất bại!");
-        }
-      })
-      .then((data) => {
-        // Xử lý đăng nhập thành công
-        const { jwt } = data;
-        // Lưu token vào localStorage hoặc cookie
-        localStorage.setItem("token", jwt);
-        // Điều hướng đến trang chính hoặc thực hiện các tác vụ sau đăng nhập thành công
-        setError("Đăng nhập thành công!");
-        navigate("/");
-      })
-      .catch((error) => {
-        // Xử lý lỗi đăng nhập
-        console.error("Đăng nhập thất bại: ", error);
-        setError(
-          "Đăng nhập thất bại. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu."
-        );
+    try {
+      const response = await fetch("http://localhost:8080/tai-khoan/dang-nhap", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginRequest),
       });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Lưu JWT vào localStorage
+        localStorage.setItem('jwt', data.jwt);
+        setError("Đăng nhập thành công!");
+        navigate('/'); // Chuyển hướng về trang chủ
+        window.location.reload(); // Reload để cập nhật state
+      } else {
+        throw new Error("Đăng nhập thất bại!");
+      }
+    } catch (error) {
+      console.error("Đăng nhập thất bại: ", error);
+      setError(
+        "Đăng nhập thất bại. Vui lòng kiểm tra lại tên đăng nhập và mật khẩu."
+      );
+    }
   };
+
   return (
     <div className="container-fluid vh-100 overflow-hidden">
       <div className="row justify-content-center align-items-center h-100">
@@ -54,7 +52,7 @@ const DangNhap = () => {
                 <h3 className="font-weight-bold">Đăng nhập</h3>
               </div>
 
-              <form>
+              <form onSubmit={handleDangNhap}>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
                     Tên đăng nhập
@@ -108,9 +106,8 @@ const DangNhap = () => {
 
                 <div className="d-grid">
                   <button
-                    type="button"
+                    type="submit"
                     className="btn btn-primary btn-lg"
-                    onClick={handleLogin}
                   >
                     Đăng nhập
                   </button>
@@ -124,9 +121,12 @@ const DangNhap = () => {
                 )}
 
                 <div className="text-center mt-3">
-                  <a href="#" className="text-decoration-none">
+                  <button 
+                    className="btn btn-link text-decoration-none p-0" 
+                    onClick={() => {/* xử lý quên mật khẩu */}}
+                  >
                     Quên mật khẩu?
-                  </a>
+                  </button>
                   <div className="mt-2">
                     Chưa có tài khoản?{" "}
                     <NavLink to="/dang-ky" className="text-decoration-none">

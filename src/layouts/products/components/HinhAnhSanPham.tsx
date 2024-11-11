@@ -4,31 +4,34 @@ import { getAllImageOfOneBook } from "../../../api/HinhAnhApi";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-interface HinhAnhSanPham {
+interface HinhAnhSanPhamProps {
   maSach: number;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-const HinhAnhSanPham: React.FC<HinhAnhSanPham> = (props) => {
-  const maSach: number = props.maSach;
-
+const HinhAnhSanPham: React.FC<HinhAnhSanPhamProps> = ({ maSach, className, style }) => {
   const [danhSachAnh, setDanhSachAnh] = useState<HinhAnhModel[]>([]);
   const [dangTaiDuLieu, setDangTaiDuLieu] = useState(true);
   const [baoLoi, setBaoLoi] = useState(null);
 
   useEffect(
     () => {
-      getAllImageOfOneBook(maSach)
-        .then((danhSach) => {
-          console.log(danhSach);
-          setDanhSachAnh(danhSach);
-          setDangTaiDuLieu(false);
-        })
-        .catch((error) => {
-          setDangTaiDuLieu(false);
-          setBaoLoi(error.message);
-        });
+      const loadFirstImage = async () => {
+        getAllImageOfOneBook(maSach)
+          .then((danhSach) => {
+            console.log(danhSach);
+            setDanhSachAnh(danhSach);
+            setDangTaiDuLieu(false);
+          })
+          .catch((error) => {
+            setDangTaiDuLieu(false);
+            setBaoLoi(error.message);
+          });
+      };
+      loadFirstImage();
     },
-    [] // Chi goi mot lan
+    [maSach]
   );
 
   if (dangTaiDuLieu) {
@@ -48,7 +51,7 @@ const HinhAnhSanPham: React.FC<HinhAnhSanPham> = (props) => {
   }
 
   return (
-    <div className="row">
+    <div className={`row ${className}`} style={style}>
       <div className="col-12">
         <Carousel showArrows={true} showIndicators={true}>
           {danhSachAnh.map((hinhAnh, index) => (

@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { renderStars } from "./DanhGiaSanPham";
 import dinhDangSo from "../../utils/DinhDangSo";
 import { toast } from 'react-toastify';
+import { themVaoGioHang } from '../../utils/GioHangUtils';
+
+
 
 interface SachPropsInterface {
   sach: SachModel;
@@ -92,8 +95,7 @@ const SachProps: React.FC<SachPropsInterface> = (props) => {
               </a>
               <button 
                 className="btn btn-danger btn-block"
-               
-                
+                onClick={() => themVaoGioHang(props.sach)}
               >
                 <i className="fas fa-shopping-cart"></i>
               </button>

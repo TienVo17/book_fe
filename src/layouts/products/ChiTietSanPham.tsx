@@ -5,6 +5,9 @@ import { getBookById } from "../../api/SachApi";
 import HinhAnhSanPham from "./components/HinhAnhSanPham";
 import DanhGiaSanPham, { renderStars } from "./components/DanhGiaSanPham";
 import dinhDangSo from "../utils/DinhDangSo";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { themVaoGioHang } from '../utils/GioHangUtils';
 
 const ChiTietSanPham: React.FC = () => {
   const { maSach } = useParams();
@@ -57,6 +60,12 @@ const ChiTietSanPham: React.FC = () => {
     };
     loadSanPham();
   }, [maSachNumber]);
+
+  const xuLyThemVaoGioHang = () => {
+    if (sach) {
+      themVaoGioHang(sach, soLuong);
+    }
+  };
 
   if (dangTaiDuLieu) {
     return (
@@ -140,9 +149,7 @@ const ChiTietSanPham: React.FC = () => {
                   </button>
                   <button
                     className="btn btn-primary mt-2"
-                    onClick={() => {
-                      // ... code ...
-                    }}
+                    onClick={xuLyThemVaoGioHang}
                   >
                     <i className="fas fa-shopping-cart me-2"></i>
                     Thêm vào giỏ hàng

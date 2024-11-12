@@ -17,46 +17,53 @@ export const useGioHang = () => {
   useEffect(() => {
     const gioHangLocal = localStorage.getItem('gioHang');
     if (gioHangLocal) {
-      setGioHang(JSON.parse(gioHangLocal));
+      try {
+        const parsedGioHang = JSON.parse(gioHangLocal);
+        setGioHang(parsedGioHang);
+      } catch (error) {
+        console.error('Lỗi khi đọc giỏ hàng:', error);
+        localStorage.removeItem('gioHang'); // Xóa dữ liệu không hợp lệ
+      }
     }
   }, []);
 
   const themVaoGio = (item: GioHangItem) => {
-    setGioHang(gioHangHienTai => {
-      const gioHangLocal = JSON.parse(localStorage.getItem('gioHang') || '[]');
-      
-      const itemTonTai = gioHangLocal.find((x: GioHangItem) => x.maSach === item.maSach);
-      
-      let gioHangMoi;
-      if (itemTonTai) {
-        const soLuongMoi = itemTonTai.soLuong + item.soLuong;
+    try {
+      setGioHang(gioHangHienTai => {
+        const gioHangLocal = JSON.parse(localStorage.getItem('gioHang') || '[]');
         
-        if (soLuongMoi > item.soLuongTon) {
-          alert(`Số lượng sách không đủ. Chỉ còn ${item.soLuongTon} cuốn.`);
-          return gioHangHienTai;
+        const itemTonTai = gioHangLocal.find((x: GioHangItem) => x.maSach === item.maSach);
+        
+        let gioHangMoi;
+        if (itemTonTai) {
+          const soLuongMoi = itemTonTai.soLuong + item.soLuong;
+          
+          if (soLuongMoi > item.soLuongTon) {
+            toast.error(`Số lượng sách không đủ. Chỉ còn ${item.soLuongTon} cuốn.`);
+            return gioHangHienTai;
+          }
+          
+          gioHangMoi = gioHangLocal.map((x: GioHangItem) => 
+            x.maSach === item.maSach 
+              ? {...x, soLuong: soLuongMoi}
+              : x
+          );
+        } else {
+          if (item.soLuong > item.soLuongTon) {
+            toast.error(`Số lượng sách không đủ. Chỉ còn ${item.soLuongTon} cuốn.`);
+            return gioHangHienTai;
+          }
+          gioHangMoi = [...gioHangLocal, item];
         }
         
-        gioHangMoi = gioHangLocal.map((x: GioHangItem) => 
-          x.maSach === item.maSach 
-            ? {...x, soLuong: soLuongMoi}
-            : x
-        );
-      } else {
-        if (item.soLuong > item.soLuongTon) {
-          throw new Error(`Số lượng sách không đủ. Chỉ còn ${item.soLuongTon} cuốn.`);
-        }
-        gioHangMoi = [...gioHangLocal, item];
-      }
-      
-      localStorage.setItem('gioHang', JSON.stringify(gioHangMoi));
-      
-      return gioHangMoi;
-    });
-    
-    const event = new CustomEvent('cartUpdated');
-    window.dispatchEvent(event);
-    
-    toast.success('Đã thêm vào giỏ hàng!');
+        localStorage.setItem('gioHang', JSON.stringify(gioHangMoi));
+        window.dispatchEvent(new Event('storage'));
+        return gioHangMoi;
+      });
+    } catch (error) {
+      console.error('Lỗi khi thêm vào giỏ:', error);
+      toast.error('Có lỗi xảy ra khi thêm vào giỏ hàng');
+    }
   };
 
   const xoaKhoiGio = (maSach: number) => {

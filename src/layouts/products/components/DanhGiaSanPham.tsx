@@ -3,6 +3,11 @@ import DanhGiaModel from "../../../models/DanhGiaModel";
 import { getAllReviewOfOneBook } from "../../../api/DanhGiaAPI";
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+
+
 
 interface DanhGiaSanPhamProps {
   maSach: number;
@@ -26,10 +31,18 @@ export const renderStars = (rating: number) => {
   );
 };
 
+
+
 const DanhGiaSanPham: React.FC<DanhGiaSanPhamProps> = ({ maSach }) => {
   const [danhSachDanhGia, setDanhSachDanhGia] = useState<DanhGiaModel[]>([]);
   const [dangTaiDuLieu, setDangTaiDuLieu] = useState(true);
   const [baoLoi, setBaoLoi] = useState<string | null>(null);
+  const [danhGiaMoi, setDanhGiaMoi] = useState({
+    diemXepHang: 5,
+    nhanXet: ""
+  });
+  const [dangGuiDanhGia, setDangGuiDanhGia] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllReviewOfOneBook(maSach)
@@ -42,6 +55,8 @@ const DanhGiaSanPham: React.FC<DanhGiaSanPhamProps> = ({ maSach }) => {
         setBaoLoi(error.message);
       });
   }, [maSach]);
+
+  
 
   if (dangTaiDuLieu) {
     return (
@@ -73,8 +88,58 @@ const DanhGiaSanPham: React.FC<DanhGiaSanPhamProps> = ({ maSach }) => {
     );
   }
 
+
+
   return (
     <div className="review-section my-4">
+      <div className="card mb-4">
+        <div className="card-body">
+          <h4 className="mb-3">Đánh giá sản phẩm</h4>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            }}>
+            <div className="mb-3">
+              <label className="form-label">Số sao:</label>
+              <select 
+                className="form-select"
+                value={danhGiaMoi.diemXepHang}
+                onChange={(e) => setDanhGiaMoi({...danhGiaMoi, diemXepHang: Number(e.target.value)})}
+              >
+                <option value="5">5 sao</option>
+                <option value="4">4 sao</option>
+                <option value="3">3 sao</option>
+                <option value="2">2 sao</option>
+                <option value="1">1 sao</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Nhận xét:</label>
+              <textarea 
+                className="form-control"
+                rows={3}
+                value={danhGiaMoi.nhanXet}
+                onChange={(e) => setDanhGiaMoi({...danhGiaMoi, nhanXet: e.target.value})}
+                required
+              />
+            </div>
+            <button 
+              type="submit" 
+              className="btn btn-primary"
+              disabled={dangGuiDanhGia}
+            >
+              {dangGuiDanhGia ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Đang gửi...
+                </>
+              ) : (
+                <>Gửi đánh giá</>
+              )}
+            </button>
+          </form>
+        </div>
+      </div>
+
       <h3 className="mb-4">
         <i className="fas fa-comments me-2"></i>
         Đánh giá từ khách hàng

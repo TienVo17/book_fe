@@ -15,6 +15,7 @@ import GioHang from "./layouts/products/GioHang";
 import { ProtectedRoute } from "./layouts/utils/ProtectedRoute";
 import HomePage from "./layouts/homepage/HomePage";
 import CapNhatSach from "./layouts/admin/components/CapNhatSach";
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -61,6 +62,18 @@ function App() {
           </>
         } />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </BrowserRouter>
   );
 }
